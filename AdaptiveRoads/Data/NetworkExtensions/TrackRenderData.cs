@@ -180,7 +180,7 @@ namespace AdaptiveRoads.Data.NetworkExtensions {
                     trackInfo.ParentInfo, tempSegmentInfo,
                     leftMatrix: this.LeftMatrix, rightMatrix: this.RightMatrix,
                     meshScale: this.MeshScale, objectIndex: this.ObjectIndex,
-                    ref vertexIndex, ref triangleIndex, this.Position, meshData, ref _);
+                    ref vertexIndex, ref triangleIndex, this.Position, meshData, ref _, new Vector2(0,1));
             }
         }
     }

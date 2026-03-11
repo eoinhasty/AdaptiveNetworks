@@ -11,13 +11,13 @@ namespace AdaptiveRoads.Patches.Lane {
 
     internal static class SeedIndexCommons {
         public static void Patch(List<CodeInstruction> codes, MethodBase method) {
-            MethodBase NewRandomizer = AccessTools.Constructor(
+            MethodBase constructor = AccessTools.Constructor(
                 typeof(Randomizer),
                 new[] { typeof(int) } )
                 ?? throw new NullReferenceException("NewRandomizer");
-            MethodInfo mGetSpeed = typeof(SeedIndexCommons).GetMethod(nameof(GetSeed), throwOnError: true);
-
-            int iLdProp = codes.Search(_c => _c.IsLdLoc(typeof(NetLaneProps.Prop), method));
+            MethodInfo mGetSeed = typeof(SeedIndexCommons).GetMethod(nameof(GetSeed), throwOnError: true);
+            MethodInfo NewRandomizer = (MethodInfo)constructor;
+            /*int iLdProp = codes.Search(_c => _c.IsLdLoc(typeof(NetLaneProps.Prop), method));
             for (int occurance = 1; occurance<=2; occurance++) {
                 int iNewRandomizer = codes.Search(_c => _c.Calls(NewRandomizer), count: occurance);
                 codes.InsertInstructions(iNewRandomizer,
@@ -26,7 +26,23 @@ namespace AdaptiveRoads.Patches.Lane {
                     TranspilerUtils.GetLDArg(method, "laneID"),
                     codes[iLdProp].Clone(),
                     new CodeInstruction(OpCodes.Call, mGetSpeed),
+                    });*/
+
+            // Find the local variable load for Prop
+            int iLdProp = codes.Search(_c => _c.IsLdLoc(typeof(NetLaneProps.Prop), method));
+            if (iLdProp == -1) throw new Exception("Could not find NetLaneProps.Prop local load");
+
+            // Loop backwards (2 then 1) so indices don't shift
+            for (int occurance = 2; occurance >= 1; occurance--) {
+                int iNewRandomizer = codes.Search(_c => _c.Calls((MethodInfo)constructor), count: occurance);
+
+                if (iNewRandomizer != -1) {
+                    codes.InsertInstructions(iNewRandomizer, new[] {
+                    TranspilerUtils.GetLDArg(method, "laneID"),
+                    codes[iLdProp].Clone(),
+                    new CodeInstruction(OpCodes.Call, mGetSeed),
                     });
+                }
             }
         }
 

@@ -322,7 +322,7 @@ namespace AdaptiveRoads.Manager {
         }
 
         public float GetAngleVelocity() {
-            if (!NodeID.ToNode().IsMiddle()) return 0;
+            if (! ((int)NodeID.ToNode().m_connectCount > 1)) return 0;
             ushort otherSegmentId = NodeID.ToNode().GetAnotherSegment(SegmentID);
             return GetAngleVelocity(otherSegmentId);
         }

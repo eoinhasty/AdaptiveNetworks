@@ -8,8 +8,8 @@ namespace AdaptiveRoads.Data.Flags {
         public Dictionary<string, int> Tags2Index = new();
         private List<ulong> allFlags_ = new();
 
-        public static DynamicFlags NONE => DynamicFlagsUtil.NONE;
-        public DynamicFlags All => new DynamicFlags(allFlags_.ToArray());
+        public static DynamicFlags<NetInfo> NONE => DynamicFlagsUtil.NONE;
+        public DynamicFlags<NetInfo> All => new DynamicFlags<NetInfo>(allFlags_.ToArray());
         public string[] AllTags => Tags2Index.Keys.ToArray();
 
         public event Action EventChanged;
@@ -29,7 +29,7 @@ namespace AdaptiveRoads.Data.Flags {
             EventChanged?.Invoke();
         }
 
-        public DynamicFlags GetFlags(params string[] tags) {
+        public DynamicFlags<NetInfo> GetFlags(params string[] tags) {
             ulong[] flags = new ulong[allFlags_.Count];
             if (tags != null) {
                 foreach (string key in tags) {
@@ -38,11 +38,11 @@ namespace AdaptiveRoads.Data.Flags {
                     }
                 }
             }
-            return new DynamicFlags(flags);
+            return new DynamicFlags<NetInfo>(flags);
         }
 
         /// <summary>WARNING: low performance!</summary>
-        public string[] GetTags(DynamicFlags flags) {
+        public string[] GetTags(DynamicFlags<NetInfo> flags) {
             List<string> tags = new();
             foreach (string tag in Tags2Index.Keys) {
                 var flag = GetFlags(new[] { tag });

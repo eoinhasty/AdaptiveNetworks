@@ -19,7 +19,7 @@ namespace AdaptiveRoads.Util {
                 return false;
             return group1.Check(group2.Flags);
         }
-        internal static bool ConnectGroupsMatch(DynamicFlags? group1, CustomConnectGroupT group2) {
+        internal static bool ConnectGroupsMatch(DynamicFlags<NetInfo>? group1, CustomConnectGroupT group2) {
             if (group1 == null || group2 == null)
                 return false;
             return group2.Check(group1.Value);

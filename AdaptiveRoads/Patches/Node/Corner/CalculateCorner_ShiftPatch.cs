@@ -22,7 +22,19 @@ public static class CalculateCorner_ShiftPatch {
         // out Vector3 cornerPos, out Vector3 cornerDirection, out bool smooth)
         return typeof(NetSegment).GetMethod(
                 nameof(NetSegment.CalculateCorner),
-                BindingFlags.Public | BindingFlags.Instance, throwOnError: true);
+                BindingFlags.Public | BindingFlags.Instance,
+                null,
+                [
+                    typeof(ushort),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(bool),
+                    typeof(Vector3).MakeByRefType(),
+                    typeof(Vector3).MakeByRefType(),
+                    typeof(bool).MakeByRefType()
+                ],
+                null)
+            ;
     }
 
     /// <param name="segmentID">segment to calculate corner</param>

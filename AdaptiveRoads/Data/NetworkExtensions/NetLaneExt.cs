@@ -326,8 +326,9 @@ namespace AdaptiveRoads.Manager{
             
             Vector3 a = posStartLeft + (posStartRight - posStartLeft) * posNormalized;
             Vector3 d = posEndLeft + (posEndRight - posEndLeft) * posNormalized;
-            Vector3 startDir = segmentOutline.Center.DirA().normalized;
-            Vector3 endDir = segmentOutline.Center.DirA().normalized;
+            Bezier3 center = segmentOutline.Center;
+            Vector3 startDir = center.Tangent(0).normalized;
+            Vector3 endDir = center.Tangent(0).normalized;
             a.y += laneInfo.m_verticalOffset;
             d.y += laneInfo.m_verticalOffset;
             //NetSegment.CalculateMiddlePoints(a, startDir, d, endDir, smoothStart, smoothEnd, out var b, out var c);

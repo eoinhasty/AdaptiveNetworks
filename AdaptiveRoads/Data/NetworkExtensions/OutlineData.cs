@@ -108,8 +108,8 @@ public struct OutlineData {
             counter2++;
 #endif
             float hw = width * .5f;
-            var dirA = -bezierA.DirA().normalized;
-            var dirD = -bezierD.DirA().normalized;
+            var dirA = -bezierA.Tangent(0).normalized;
+            var dirD = -bezierD.Tangent(0).normalized;
 
             {
                 float centerShift = TiltData.CalcCenterShift(tiltData.a, tiltData.wireHeight);
@@ -187,8 +187,8 @@ public struct OutlineData {
             RenderUtil.DrawOverlayCircle(cameraInfo, Color.green / 2, Right.d, 1, alphaBlend);
             RenderUtil.DrawOverlayCircle(cameraInfo, Color.yellow / 2, Left.d, 1, alphaBlend);
 
-            Vector3 dirA = Center.DirA();
-            Vector3 dirD = Center.DirD();
+            Vector3 dirA = Center.Tangent(0);
+            Vector3 dirD = Center.Tangent(1);
             var startArrow = new Bezier3(Center.a, Center.a + dirA, Center.a + 2 * dirA, Center.a + 3 * dirA);
             var endArrow = new Bezier3(Center.d, Center.d + dirD, Center.d + 2 * dirD, Center.d + 3 * dirD);
             startArrow.RenderArrow(cameraInfo, Color.blue, 1, alphaBlend);

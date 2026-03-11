@@ -177,8 +177,8 @@ namespace AdaptiveRoads.Data.NetworkExtensions {
                 m_flags = m_flags.SetFlags(Flags.Uturn, on: segmentID_A == segmentID_D);
             }
 
-            Bezier3 bezierA = LaneExtA.LaneData.GetBezier(NodeID);
-            Bezier3 bezierD = LaneExtD.LaneData.GetBezier(NodeID);
+            Bezier3 bezierA = LaneExtA.LaneData.Bezier;
+            Bezier3 bezierD = LaneExtD.LaneData.Bezier;
 
             TiltData tiltData = new(
                 SegmentExtA.GetEnd(NodeID).TotalAngle,
@@ -264,7 +264,7 @@ namespace AdaptiveRoads.Data.NetworkExtensions {
             return ret;
         }
 
-        private DynamicFlags LaneTagsFlagsD =>
+        private DynamicFlags<NetInfo> LaneTagsFlagsD =>
             InfoExtD?.Lanes?[LaneInfoD]?.LaneTags?.Flags ?? DynamicFlagsUtil.NONE;
 
         public void RenderTrackInstance(RenderManager.CameraInfo cameraInfo, int layerMask) {

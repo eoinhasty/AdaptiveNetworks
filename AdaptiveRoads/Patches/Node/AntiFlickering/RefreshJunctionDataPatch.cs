@@ -13,9 +13,23 @@ namespace AdaptiveRoads.Patches.Node.AntiFlickering {
     [HarmonyPatch()]
     [InGamePatch]
     public static class RenderInstance {
-        public static MethodBase TargetMethod() =>
-            typeof(NetNode)
-            .GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, throwOnError: true);
+        public static MethodBase TargetMethod() {
+            return typeof(NetNode)
+            .GetMethod("RenderInstance",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new Type[] {
+                    typeof(RenderManager.CameraInfo),
+                    typeof(ushort),
+                    typeof(NetInfo),
+                    typeof(int),
+                    typeof(NetNode.FlagsLong),
+                    typeof(uint).MakeByRefType(),
+                    typeof(RenderManager.Instance).MakeByRefType()
+                },
+                null
+            );
+        }
 
         public static IEnumerable<CodeInstruction> Transpiler(
             IEnumerable<CodeInstruction> instructions, MethodBase original) {

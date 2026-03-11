@@ -10,9 +10,22 @@ namespace AdaptiveRoads.Patches.Segment {
     [HarmonyPatch]
     public static class RenderInstance {
         // private void NetSegment.RenderInstance(RenderManager.CameraInfo cameraInfo, ushort segmentID, int layerMask, NetInfo info, ref RenderManager.Instance data)
-        public static MethodBase TargetMethod() =>
-            typeof(NetSegment).GetMethod("RenderInstance", BindingFlags.NonPublic | BindingFlags.Instance, true);
-
+        public static MethodBase TargetMethod() {
+            return typeof(NetSegment).GetMethod(
+                "RenderInstance",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new Type[]
+                {
+                    typeof(RenderManager.CameraInfo),
+                    typeof(ushort),
+                    typeof(int),
+                    typeof(NetInfo),
+                    typeof(RenderManager.Instance).MakeByRefType()
+                },
+                null
+            );
+        }
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original) {
             try {
                 var codes = TranspilerUtils.ToCodeList(instructions);

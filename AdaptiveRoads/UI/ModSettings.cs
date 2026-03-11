@@ -143,12 +143,12 @@ namespace AdaptiveRoads.UI {
                             RoadUtils.SetupThinWires(force: true);
                         }
                     }).tooltip = "applies to all networks (not only AN networks)";
-                    WireScaleComponent = general.AddSavedSlider(
+                    WireScaleComponent = (UIComponent)general.AddSlider(
                         text: "wire width",
-                        tooltip: val => "1/" + val,
-                        savedFloat: WireScale,
-                        min: 1, max: 10, step: 0.1f,
-                        () => RoadUtils.SetupThinWires(force: true));
+                        min: 1, max: 10, step: 0.1f, defaultValue: WireScale,
+                        //tooltip: val => "1/" + val,
+                        //savedFloat: WireScale,
+                        eventCallback: val => RoadUtils.SetupThinWires(force: true));
                     WireScaleComponent.parent.isVisible = ThinWires.value;
                 }
 

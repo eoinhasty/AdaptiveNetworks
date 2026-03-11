@@ -121,7 +121,7 @@ namespace AdaptiveRoads.Manager {
 
             [NonSerialized]
             [XmlIgnore]
-            public DynamicFlags NodeCustomConnectGroups;
+            public DynamicFlags<NetInfo> NodeCustomConnectGroups;
 
             [AfterField(nameof(NetInfo.m_pavementWidth))]
             [CustomizableProperty("Pavement Width Right", "Properties")]
@@ -619,8 +619,8 @@ namespace AdaptiveRoads.Manager {
             public void LoadVanillaTags(NetInfo info) {
                 string[] EMPTY = DynamicFlagsUtil.EMPTY_TAGS;
                 info.m_tags = Tags ?? EMPTY;
-                NetInfo.AddTags(info.m_tags);
-                info.m_netTags = NetInfo.GetFlags(info.m_tags);
+                DynamicFlags<NetInfo>.AddTags(info.m_tags);
+                info.m_netTags = DynamicFlags<NetInfo>.GetFlags(info.m_tags);
                 foreach (var node in info.m_nodes) {
                     if (node?.GetMetaData() is Node metadata) {
                         node.m_tagsRequired = metadata.TagsInfo.Required ?? EMPTY;
@@ -629,10 +629,10 @@ namespace AdaptiveRoads.Manager {
                         node.m_maxSameTags = metadata.TagsInfo.MaxMatch;
                         node.m_minOtherTags = metadata.TagsInfo.MinMismatch;
                         node.m_maxOtherTags = metadata.TagsInfo.MaxMismatch;
-                        NetInfo.AddTags(node.m_tagsRequired);
-                        NetInfo.AddTags(node.m_tagsForbidden);
-                        node.m_nodeTagsRequired = NetInfo.GetFlags(node.m_tagsRequired);
-                        node.m_nodeTagsForbidden = NetInfo.GetFlags(node.m_tagsForbidden);
+                        DynamicFlags<NetInfo>.AddTags(node.m_tagsRequired);
+                        DynamicFlags<NetInfo>.AddTags(node.m_tagsForbidden);
+                        node.m_nodeTagsRequired = DynamicFlags<NetInfo>.GetFlags(node.m_tagsRequired);
+                        node.m_nodeTagsForbidden = DynamicFlags<NetInfo>.GetFlags(node.m_tagsForbidden);
                     }
                 }
             }
@@ -837,8 +837,8 @@ namespace AdaptiveRoads.Manager {
                 } catch (Exception ex) { ex.Log(); }
             }
 
-            DynamicFlags GetNodeCustomConnectGroups(NetInfo netInfo) {
-                DynamicFlags ret = DynamicFlagsUtil.NONE;
+            DynamicFlags<NetInfo> GetNodeCustomConnectGroups(NetInfo netInfo) {
+                DynamicFlags<NetInfo> ret = DynamicFlagsUtil.NONE;
                 foreach(var node in netInfo.m_nodes) {
                     if(node.GetMetaData() is Node nodeMetaData)
                         ret = ret | nodeMetaData.CustomConnectGroups.Flags;

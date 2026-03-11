@@ -15,7 +15,7 @@ namespace AdaptiveRoads.Util {
                 var family = info.GetRelatives(netInfos).ToList();
                 SortByElevation(family);
                 groups.Add(family);
-                scanned.AddRange(family);
+                scanned.UnionWith(family);
             }
             return groups.ToArray();
         }
@@ -70,7 +70,7 @@ namespace AdaptiveRoads.Util {
 
                 // get elevations that are indirectly linked to currentInfo.
                 foreach (var netinfo2 in family.ToArray()) {
-                    family.AddRange(netinfo2.GetDirectlyRelated(netInfos));
+                    family.UnionWith(netinfo2.GetDirectlyRelated(netInfos));
                 }
 
                 return family;
